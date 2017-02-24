@@ -10,12 +10,12 @@ public class PuzzleGenerator : MonoBehaviour
     public RectTransform DragingLimitRect;
     public RectTransform SelectedPieceParent;
     public float RandomRadius;
+    public float RateOfSolving;
     public static PuzzleGenerator singleton;
 
 
     private int SolvedPiecesCounter = 0 ;
-    PuzzlePiece[] PuzzlePieces;
-
+    private PuzzlePiece[] PuzzlePieces;
     private void Awake()
     {
         if(!singleton)
@@ -39,5 +39,14 @@ public class PuzzleGenerator : MonoBehaviour
     public void OnPieceSolved()
     {
         SolvedPiecesCounter++;
+        if(SolvedPiecesCounter >= NoOfPieces )
+        {
+            GameController.singleton.OnFinishPuzzle();
+        }
+    }
+
+    private void Update()
+    {
+        GameController.singleton.SetSolvingRate(SolvedPiecesCounter / GameController.singleton.GameTimer);
     }
 }
